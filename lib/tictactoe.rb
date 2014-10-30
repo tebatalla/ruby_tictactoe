@@ -1,9 +1,10 @@
-Dir["lib/*.rb"].each {|file| require file }
+$LOAD_PATH << '.'
+require 'exceptions.rb'
 
 class Game
 
 	attr_reader :board, :player1, :player2
-
+  include Exceptions
 	@@winning_combos = [
 						[0, 1, 2],
 						[3, 4, 5],
@@ -22,7 +23,7 @@ class Game
 	end
 
 	def turn(player)
-		@board.display_grid
+		puts @board.display_grid
 		puts "#{player.name}, please make a move (e.g. top left is 0, bottom right is 8)"
 		begin
 			position = gets.chomp.to_i
@@ -39,6 +40,41 @@ class Game
 			player_spots & combo == combo
 		end
 	end
+  
+	def tie_game?
+		@board.grid.select{|spot| spot == "-"}.empty?
+	end
+  
+	def start
+		loop do
+			turn(player1)
+			if won_game?(player1)
+				victory(player1)
+				break
+			elsif tie_game?
+				tie_game
+				break
+			end
+			turn(player2)
+			if won_game?(player2)
+				victory(player2)
+				break
+			elsif tie_game?
+				tie_game
+				break
+			end
+		end
+	end
+  
+  def victory(player)
+    puts @board.display_grid
+    puts "Congrats #{player.name}, you have won!"
+  end
+  
+  def tie_game
+    puts @board.display_grid
+    puts "It's a tie!"
+  end
 
 	class Board
 		attr_reader :grid
@@ -85,4 +121,12 @@ class Game
 
 	end
 
+end
+def start_game
+  puts "Please enter Player 1's name (X)"
+  player1 = gets.chomp
+  puts "Please enter Player 2's name (O)"
+  player2 = gets.chomp
+  new_game = Game.new(player1, player2)
+  new_game.start
 end

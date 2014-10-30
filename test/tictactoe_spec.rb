@@ -1,4 +1,5 @@
-Dir["../../ruby_tictactoe/lib/*.rb"].each {|file| require file }
+Dir["../ruby_tictactoe/lib/*.rb"].each {|file| require file }
+
 require 'rspec'
 
 new_game = Game.new("Julia", "Tomas")
@@ -37,4 +38,13 @@ describe "Game" do
 		tictactoe.make_move!(1, "X")
 		expect(new_game.won_game?(new_game.player1)).to eq(true)
 	end
+  it "checks if a there is a tie game by seeing if all spots are filled" do
+    tictactoe.make_move!(3, "X")
+    tictactoe.make_move!(4, "X")
+    tictactoe.make_move!(5, "X")
+    tictactoe.make_move!(6, "X")
+    tictactoe.make_move!(7, "X")
+    tictactoe.make_move!(8, "X")
+    expect(new_game.tie_game?).to eq(true)
+  end
 end
