@@ -1,3 +1,5 @@
+Dir["lib/*.rb"].each {|file| require file }
+
 class Board
 	attr_reader :grid
 	def initialize
@@ -24,7 +26,16 @@ class Board
 	end
 
 	def make_move(position, symbol)
-		@grid[position[0]][position[1]] = symbol
+		if valid_move?(position)
+			@grid[position[0]][position[1]] = symbol
+		else
+			raise Exceptions::InvalidMoveError, "Invalid move"
+		end
+		
+	end
+
+	def valid_move?(position)
+		@grid[position[0]][position[1]] == "-"
 	end
 end
 
@@ -32,10 +43,10 @@ class Player
 	attr_accessor :name, :turn
 	attr_reader :symbol
 
-	def initialize(turn, name, symbol)
+	def initialize(turn, name)
 		@name = name
-		@symbol = symbol.upcase
 		@turn = turn
+		@symbol = turn == 1 ? "X" : "O"
 	end
 
 end
