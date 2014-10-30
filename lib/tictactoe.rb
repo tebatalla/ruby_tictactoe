@@ -24,6 +24,18 @@ class Board
 	end
 
 	def make_move(position, symbol)
-		@grid
+		@grid[position[0]][position[1]] = symbol
 	end
+end
+
+class Player
+	attr_accessor :name, :turn
+	attr_reader :symbol
+
+	def initialize(turn, name, symbol)
+		@name = name
+		@symbol = symbol.upcase
+		@turn = turn
+	end
+
 end
