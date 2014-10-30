@@ -122,6 +122,7 @@ class Game
 	end
 
 end
+
 def start_game
   puts "Please enter Player 1's name (X)"
   player1 = gets.chomp
